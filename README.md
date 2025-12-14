@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/python-3.11-blue.svg)
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
 ![Jupyter Notebook](https://img.shields.io/badge/notebook-Jupyter-orange.svg)
-![Last Commit](https://img.shields.io/github/last-commit/skadamcik/hospital-.svg)
+![Last Commit](https://img.shields.io/github/last-commit/skadamcik/hospital-stay-prediction.svg)
 
 
 ### Data manipulation and analysis on a synthetic hospital record data set
@@ -81,7 +81,7 @@ Several measures were taken to prime the dataset for regression analysis.
 4. Established a validation dictionary with plausible ranges for vitals (healthy and extreme). Overlayed validation boundaries on histograms and dropped records outside these ranges.
     * Ex. Oxygen Saturation
 
-![Distribution of oxygen saturation with boundary lines](o2sat_dist.png)![Cleaned distribution of oxygen saturation after validation](o2sat_cleandist.png)
+![Distribution of oxygen saturation with boundary lines](images/o2sat_dist.png)![Cleaned distribution of oxygen saturation after validation](images/o2sat_cleandist.png)
 
 5. Encoded categorical features:
     * `gender`: binary encoding &rarr; `gender_encoded`
@@ -94,7 +94,7 @@ To assess relationships between features, an initial correlation heatmap was gen
 
 A second heatmap was generated with `length_of_stay` as the target focus.
 
-![Heatmap visualizing all features against length of stay](LoS_heatmap.png)
+![Heatmap visualizing all features against length of stay](images/LoS_heatmap.png)
 
 **Key findings:**
 * **`cancer` was most strongly correlated with `length_of_stay`**
@@ -103,8 +103,8 @@ A second heatmap was generated with `length_of_stay` as the target focus.
 Further exploring these relationships, scatterplots were generated for each feature against `length_of_stay`, with trendlines added for clarity.
 * Ex. `cancer` (`r = 0.69`) and `stress_level` (`r = -0.26`) against `length_of_stay`
 
-![Scatterplot of cancer against length of stay, r = 0.69](cancer_scatter.png)
-![Scatterplot of diet score against length of stay, r = -0.26](diet_scatter.png)
+![Scatterplot of cancer against length of stay, r = 0.69](images/cancer_scatter.png)
+![Scatterplot of diet score against length of stay, r = -0.26](images/diet_scatter.png)
 
 **Feature selection:**
 * Dropped features with correlation magnitude < 0.1
@@ -116,7 +116,7 @@ Further exploring these relationships, scatterplots were generated for each feat
 ### Part 4: Linear Regression model development and evaluation
 Using the refined dataset, a baseline linear regression model acheived an **R<sup>2</sup> of 0.66**, with an average prediction error of **$\pm$ 1.25 days**. As expected, the model performed better with shorter lengths of stay, but variability increased for longer stays. Residual analysis (not shown here) confirmed this, highlighting greater error at higher lengths of stay.
 
-![Scatterplot of predicted vs. actual length of stay, linear model](lr_pred_act.png)
+![Scatterplot of predicted vs. actual length of stay, linear model](images/lr_pred_act.png)
 
 **Key findings:**
 * Medical conditions were stronger predictors of hospital stay than vital metrics, (due to binary encoding). 
@@ -135,12 +135,12 @@ Ridge and Lasso regression models were tuned and tested.
 ### Part 5: Random Forest regression model development and evaluation
 To address the limited variation in predictions from the linear model, a Random Forest regression was tested on the initial, cleaned dataset. The model produced more variable predictions but slightly lower accuracy, with **R<sup>2</sup> = 0.65** and average error of **$\pm$ 1.27 days**.
 
-![Scatterplot of predicted vs. actual length of stay, random forest model](rf_pred_act.png)
+![Scatterplot of predicted vs. actual length of stay, random forest model](images/rf_pred_act.png)
 
 ### Part 6: Compare models and summarize findings
 Comparing linear coefficients and Random Forest feature importances revealed consistent top predictors: `cancer` and `diabetes`.Beyond these, **the linear model relied more on medical conditions**, while **the Random Forest model emphasized patient vitals**.
 
-![Bar chart comparing top 10 linear coefficients vs. RF importances](feature_comparison.png)
+![Bar chart comparing top 10 linear coefficients vs. RF importances](images/lr_top10_features.png)
 
 A broader union of top predictors of both models was also analyzed, confirming these trends.
 
